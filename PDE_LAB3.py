@@ -93,5 +93,15 @@ class Solver:
 def main():
     pass
 
+def testing():
+    solver1 = Solver(1000, 0, 1)
+    print(solver1.n)
+    print(solver1.h)
+    print(solver1.X_vec)
+    print(solver1.alpha)
+    print(solver1.beta)
+    print(solver1.sol_vec_dirichlet)
+    print(solver1.sol_vec_mixed)
+
 if __name__ == '__main__':
-    main()
+    testing()
