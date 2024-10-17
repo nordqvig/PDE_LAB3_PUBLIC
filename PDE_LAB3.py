@@ -5,31 +5,45 @@ import matplotlib.pyplot as plt
 """Numerical solver class that solves the differential equation presented in labsheet (with varying boundary conditions) 
 using the FD scheme outlien in the report. Also contains error calculation and visualization methods."""
 class Solver:
-    """Initialization function that assigns the following attributes:
+    """Initialization function that assigns the following attributes to the class instance:
      self.n - the number of partitions equally spaced on interval [0,1]
-     self.alpha - the left boundary condition (at x=0)
-     self.beta - the right boundary condition (at x=1)
+     self.alpha - the left boundary condition (at x=0) (dirichlet OR neumann)
+     self.beta - the right boundary condition (at x=1) (dirichlet OR neumann)
      """
     def __init__(self, n, alpha, beta):
         self.n = n
         self.alpha = alpha
         self.beta = beta
 
+    """The function a(x). Takes in an x-value and returns a(x)."""
+    def a(self, x):
+        return (1.0 + x)
 
+    """The function f(x). Takes in an x-value and returns f(x)."""
+    def f(self, x):
+        return 1
 
+    """The analytical solution to the PDE, u_exact. Takes in an x-value and returns u_exact(x). 
+    Implemented for error calculation purposes. """
+    def u_exact(self, x):
+        pass
+
+    """Calculates the error as outlined in exercise 3). Takes in an array containing the numerical solution on the gridspace
+    and returns the error_inf. """
+    def error_inf(self):
+        pass
+
+    def solve_dirichlet(self):
 
 
 def a(x=float):
     return (1.0 + x)
-
 def f(x=float):
     return 1
-
 def u_exact(alpha, beta, x=float):
     c2 = alpha
     c1 = (beta-alpha+1)/np.log(2) - 1
     return (c1+1)*np.log(1+x) - x + c2
-
 def error_inf(X_vec, U_numeric):
     U_exact_vector = [u_exact(i) for i in X_vec]
     return np.max(np.abs(np.array(U_exact_vector) - np.array(U_numeric)))
