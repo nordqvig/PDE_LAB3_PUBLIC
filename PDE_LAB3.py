@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 using the FD scheme outlien in the report. Also contains error calculation and visualization methods."""
 class Solver:
     """Initialization function that assigns the following attributes to the class instance:
-     self.n - the number of partitions equally spaced on interval [0,1]
-     self.alpha - the left boundary condition (at x=0) (dirichlet OR neumann)
-     self.beta - the right boundary condition (at x=1) (dirichlet OR neumann)
+     self.n - the number of partitions that interval [0,1] is split into.
+     self.h - the step size length (h) of each partition on interval [0,1].
+     self.alpha - the left boundary condition (at x=0) (dirichlet OR neumann).
+     self.beta - the right boundary condition (at x=1) (dirichlet OR neumann).
      """
     def __init__(self, n, alpha, beta):
         self.n = n
+        self.h = 1/self.n
         self.alpha = alpha
         self.beta = beta
 
@@ -33,7 +35,39 @@ class Solver:
     def error_inf(self):
         pass
 
+    """Solves for u(x) in the following differential equation: 
+    -(a(x)*u'(x))' = f(x) 
+    u(0) = alpha (dirichlet boundary condition)
+    u(1) = beta (dirichlet boundary condition)
+    Uses a(x) and f(x) as defined above and returns the array U_vec containing the numerical solution of u(x) at each gridpoint. """
     def solve_dirichlet(self):
+        A_vec = [a(i*self.h) for i in range(0, N+1)] # creates a vector containing a(x) called on all the gridpoints x_i
+
+
+        """Construct the matrices M and F in the linear system MU = F. This will then be solved to obtain U. """
+        M_matrix = np.zeros((self.n+1, self.n+1))
+        F_vec = np.zeros(self.n+1)
+
+        # Dirichlet boundary condition at left boundary.
+        M_matrix[0, 0] = 1
+        F_vec[0] = self.alpha
+
+        # Build matrix M and vector F
+        for i in range(1, self.n):
+            temp_a_deriv = ( A_vec[i+1] - A_vec[i-1] ) / (2 * self.h) # Approximates the derivative of a(x) at current gridpoint, 2nd order.
+
+            # fills matrix M with coefficients
+            M_matrix[i][i-1] = temp_a_deriv / (2 * self.h) - A_vec[i] / (self.h**2)
+            M_matrix[i][i] = 2 * A_vec[i] / (self.h**2)
+            M_matrix[i][i+1] = -temp_a_deriv / (2 * self.h) - A_vec[i] / (self.h**2)
+
+            # adds f(x) at current gridpoint to vector F
+            F_vec[i] = self.f(i*self.h)
+
+        # Dirichlet boundary condition at right boundary
+        M_matrix[self.n, self.n] = 1
+        F_vec[self.n] = self.beta
+
 
 
 def a(x=float):
@@ -50,7 +84,7 @@ def error_inf(X_vec, U_numeric):
 
 def solve(N, alpha, beta):
     h = 1 / N
-    A_vec = [a(i*h) for i in range(0, N+1)] # creates a vector of a(x) called on all the gridpoints x_i
+    A_vec = [a(i*h) for i in range(0, N+1)]
 
     """ Trying to solve MU = F """
 
