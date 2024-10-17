@@ -117,9 +117,10 @@ class Solver:
             F_vec[i] = self.f(i * self.h)
 
         # Neumann boundary condition at right boundary, implemented as a left-sided 2nd order accurate FD scheme
-        M_matrix[self.n, self.n] = 3/(2 * self.h)
-        M_matrix[self.n, self.n-1] = -2/self.h
-        M_matrix[self.n, self.n-2] = 1/self.h
+        # TODO
+        M_matrix[self.n, self.n] = self.h
+        M_matrix[self.n, self.n-1] = -1/self.h
+        M_matrix[self.n, self.n-2] = 0
         F_vec[self.n] = self.beta
 
         print(M_matrix)
