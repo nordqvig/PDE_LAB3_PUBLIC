@@ -77,20 +77,21 @@ class Solver:
         sol_vec_dirichlet = np.linalg.solve(M_matrix, F_vec)
         self.sol_vec_dirichlet = sol_vec_dirichlet
 
-    """Should be called after calculating atleast 1 numerical solution. Calculates the error_inf as outlined in exercise 
-    3). Takes in an array containing the numerical solution on the gridspace and returns the error_inf. """
+    """Calculates the error_inf as outlined in exercise 3). Sets the attributes self.error_dirichlet and self.error_mixed. 
+    Should be called after calculating at least 1 numerical solution. """
     def calculate_error_inf(self):
         if self.sol_vec_dirichlet:
-            U_vec_exact_dirichlet = [self.sol_exact_dirichlet(x_i) for x_i in self.X_vec] # vector containing exact solution u_exact(x) at every gridpoint
-            temp_error_vec = np.array(U_vec_exact_dirichlet - self.sol_vec_dirichlet)
-            self.error_inf_dirichlet = max(np.abs(temp_error_vec))
+            sol_vec_exact_dirichlet = [self.sol_exact_dirichlet(x_i) for x_i in self.X_vec] # vector holding exact solution at every gridpoint
+            temp_vec = np.array(sol_vec_exact_dirichlet) - np.array(self.sol_vec_dirichlet) # vector holding error at each gridpoint
+            self.error_dirichlet = max(np.abs(temp_vec))
 
-
+        if self.sol_vec_mixed:
+            sol_vec_exact_mixed = [self.sol_exact_mixed(x_i) for x_i in self.X_vec]
+            temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed)
+            self.error_mixed = max(np.abs(temp_vec))
 
 def main():
-
-
-
+    pass
 
 if __name__ == '__main__':
     main()
