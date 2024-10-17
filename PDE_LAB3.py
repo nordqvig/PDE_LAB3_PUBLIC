@@ -118,7 +118,7 @@ class Solver:
 
         # Neumann boundary condition at right boundary, implemented as a left-sided 2nd order accurate FD scheme
         # TODO
-        M_matrix[self.n, self.n] = self.h
+        M_matrix[self.n, self.n] = 1/self.h
         M_matrix[self.n, self.n-1] = -1/self.h
         M_matrix[self.n, self.n-2] = 0
         F_vec[self.n] = self.beta
