@@ -2,6 +2,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+"""Numerical solver class that solves the differential equation presented in labsheet (with varying boundary conditions) 
+using the FD scheme outlien in the report. Also contains error calculation and visualization methods."""
+class Solver:
+    """Initialization function that assigns the following attributes:
+     self.n - the number of partitions equally spaced on interval [0,1]
+     self.alpha - the left boundary condition (at x=0)
+     self.beta - the right boundary condition (at x=1)
+     """
+    def __init__(self, n, alpha, beta):
+        self.n = n
+        self.alpha = alpha
+        self.beta = beta
+
+
+
+
+
 def a(x=float):
     return (1.0 + x)
 
