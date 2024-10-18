@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 """Numerical solver class that solves the differential equation presented in labsheet (with varying boundary conditions) 
-using the FD scheme outlien in the report. Also contains error calculation and visualization methods."""
+using the FD scheme outlined in the report. Also contains error calculation functionality."""
 class Solver:
     """Initialization function that assigns the following attributes to the class instance:
      self.n - the number of partitions that interval [0,1] is split into.
@@ -14,8 +14,7 @@ class Solver:
      self.sol_vec_dirichlet - Attribute to hold the numerical solution obtained with dirichlet boundary conditions
      self.sol_vec_mixed - Attribute to hold the numerical solution obtained with mixed boundary conditions
      self.error_dirichlet - Attribute to hold the infinity error as outlined in exercise 3 for dirichlet solution.
-     self.error_mixed - Attribute to hold the infinity error as outlined in exercise 3 for mixed solution.
-     """
+     self.error_mixed - Attribute to hold the infinity error as outlined in exercise 3 for mixed solution. """
     def __init__(self, n, alpha, beta):
         self.n = n
         self.h = 1/self.n
@@ -29,7 +28,7 @@ class Solver:
 
     """The function a(x). Takes in an x-value and returns a(x)."""
     def a(self, x):
-        return (1.0 + x)
+        return 1.0 + x
     """The function f(x). Takes in an x-value and returns f(x)."""
     def f(self, x):
         return 1
@@ -47,7 +46,7 @@ class Solver:
     def sol_exact_mixed(self, x):
         c1 = 2*self.beta + 2
         c2 = self.alpha
-        return c1*np.log(1+x) - x - self.alpha # analytical solution from report
+        return c1*np.log(1+x) - x - c2 # analytical solution from report
 
     """Solves for u(x) in the following differential equation: 
     -(a(x)*u'(x))' = f(x) 
@@ -129,22 +128,20 @@ class Solver:
     """Calculates the error_inf as outlined in exercise 3). Sets the attributes self.error_dirichlet and self.error_mixed. 
     Should be called after calculating at least 1 numerical solution. """
     def calculate_error(self):
-        # if type(self.sol_vec_dirichlet) != []:
+        if len(self.sol_vec_dirichlet) !=0 :
             sol_vec_exact_dirichlet = [self.sol_exact_dirichlet(x_i) for x_i in self.X_vec] # vector holding exact solution at every gridpoint
             temp_vec = np.array(sol_vec_exact_dirichlet) - np.array(self.sol_vec_dirichlet) # vector holding error at each gridpoint
             self.error_dirichlet = max(np.abs(temp_vec))
 
-        # if self.sol_vec_mixed != []:
-            sol_vec_exact_mixed = [self.sol_exact_mixed(x_i) for x_i in self.X_vec]
-            temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed)
+        if len(self.sol_vec_mixed) !=0 :
+            sol_vec_exact_mixed = [self.sol_exact_mixed(x_i) for x_i in self.X_vec] # vector holding exact solution at every gridpoint
+            temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed) # vector holding error at each gridpoint
             self.error_mixed = max(np.abs(temp_vec))
-
-
 
 def plot1():
     errors_dirichlet = [] # to hold errors from solvers
     errors_mixed = []
-    X_axis = [] # x axis values to be plotted
+    X_axis = [] # x-axis values to be plotted
     Slope2 = [] # vector to hold reference line y = exp(2x), to give y = 2x in loglog plot
 
     for i in range(1, 8):
@@ -161,9 +158,9 @@ def plot1():
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
     ax1.loglog(X_axis, errors_dirichlet, color = 'blue' , label='Dirichlet')
-    ax1.loglog(X_axis, np.array(X_axis)*2, color = 'orange', label='Slope = 2')
+    ax1.loglog(X_axis, np.array(X_axis)**2, color = 'orange', label='Slope = 2')
     ax2.loglog(X_axis, errors_mixed, color = 'red' , label='Mixed')
-    ax2.loglog(X_axis, np.array(X_axis)*2, color = 'orange' , label='Slope = 2')
+    ax2.loglog(X_axis, np.array(X_axis)**2, color = 'orange' , label='Slope = 2')
     ax1.legend()
     ax2.legend()
     plt.show()
