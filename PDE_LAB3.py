@@ -117,14 +117,11 @@ class Solver:
             F_vec[i] = self.f(i * self.h)
 
         # Neumann boundary condition at right boundary, implemented as a left-sided 2nd order accurate FD scheme
-        # TODO
-        M_matrix[self.n, self.n] = 1/self.h
-        M_matrix[self.n, self.n-1] = -1/self.h
-        M_matrix[self.n, self.n-2] = 0
+        M_matrix[self.n, self.n] = 3/(2*self.h)
+        M_matrix[self.n, self.n-1] = -2/self.h
+        M_matrix[self.n, self.n-2] = 1/(2*self.h)
         F_vec[self.n] = self.beta
 
-        print(M_matrix)
-        print(F_vec)
         # Solves the system MU = F and returns U_vec
         sol_vec_mixed = np.linalg.solve(M_matrix, F_vec)
         self.sol_vec_mixed = sol_vec_mixed
@@ -163,13 +160,12 @@ def main():
     # ax1.loglog(X_axis, errors_dirichlet, color = 'blue' , label='Dirichlet')
     # ax2.loglog(X_axis, errors_mixed, color = 'red' , label='Mixed')
 
-
-
     solver1 = Solver(10,0, 1)
     solver1.solve_mixed()
     plt.plot(solver1.X_vec, solver1.sol_vec_mixed, color = 'blue')
-    plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)))
+    plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)), 'r*')
     plt.show()
+
 def testing():
     pass
 
