@@ -166,17 +166,18 @@ def plot1():
     plt.show()
 
 
+def plot2():
+    solver1 = Solver(10, 0, 1)
+    solver1.solve_mixed()
+    plt.plot(solver1.X_vec, solver1.sol_vec_mixed, color='blue')
+    plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)), 'r*')
+    plt.show()
+
+
 """Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
 as .pdf files to working directory with labels, legends, etc."""
-def exercise3plots():
-    pass
-    #TODO
-
-def testing():
-    pass
-
 def main():
-    plot1()
+    plot2()
 
 if __name__ == '__main__':
     main()
