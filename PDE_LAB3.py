@@ -138,14 +138,22 @@ class Solver:
             temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed) # vector holding error at each gridpoint
             self.error_mixed = max(np.abs(temp_vec))
 
+"""Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
+as .pdf files to working directory with labels, legends, etc."""
+def exercise3():
 
-def plot1():
-    errors_dirichlet = [] # to hold errors from solvers
+    # arrays to hold errors from solvers for different values of h = 1 / N
+    errors_dirichlet = []
     errors_mixed = []
-    X_axis = [] # x-axis values to be plotted
-    Slope2 = [] # vector to hold reference line y = exp(2x), to give y = 2x in loglog plot
 
-    for i in range(1, 8):
+    X_axis = [] # array to hold x-axis values of h = 1 / N
+    Slope2 = [] # array of y = exp(2*h) values, to plot the theoretical convergence of 2nd order
+
+    # loops through N = 2^i for i ∈ {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} and for each value N:
+    # 1) executes FD solver on both problems
+    # 2) calculates the error of both solutions
+    # 3) stores output to be plotted
+    for i in range(1, 11):
         X_axis.append(1/ (2 ** i))
 
         tempSolver = Solver(2**i,0,1)
@@ -157,28 +165,30 @@ def plot1():
         errors_mixed.append(tempSolver.error_mixed)
         Slope2.append(np.exp(2*i))
 
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.loglog(X_axis, errors_dirichlet, color = 'blue' , label='Dirichlet')
-    ax1.loglog(X_axis, np.array(X_axis)**2, color = 'orange', label='Slope = 2')
-    ax2.loglog(X_axis, errors_mixed, color = 'red' , label='Mixed')
-    ax2.loglog(X_axis, np.array(X_axis)**2, color = 'orange' , label='Slope = 2')
-    ax1.legend()
-    ax2.legend()
-    plt.show()
+    # creates figure Exercise3a)Dirichlet
+    plt.figure()
+    plt.loglog(X_axis, errors_dirichlet, color = 'blue', marker = '*', label = 'Error of numerical solution')
+    plt.loglog(X_axis, np.array(X_axis) ** 2, color = 'orange', label = 'Theoretical 2nd order behavior')
+    plt.title('Convergence rate for Dirichlet boundary conditions, loglog scale')
+    plt.xlabel('Steplength h = 1/N')
+    plt.ylabel('Error')
+    plt.legend()
+    plt.savefig('Exercise3a)Dirichlet.pdf', format = 'pdf')
+    plt.clf()
 
+    # creates figure Exercise3b)Mixed
+    plt.figure()
+    plt.loglog(X_axis, errors_dirichlet, color = 'red', marker = '*', label = 'Error of numerical solution')
+    plt.loglog(X_axis, np.array(X_axis) ** 2, color = 'orange', label = 'Theoretical 2nd order behavior')
+    plt.title('Convergence rate for mixed boundary conditions, loglog scale')
+    plt.xlabel('Steplength h = 1/N')
+    plt.ylabel('Error')
+    plt.legend()
+    plt.savefig('Exercise3b)mixed.pdf', format = 'pdf')
+    plt.clf()
 
-def plot2():
-    solver1 = Solver(10, 0, 5)
-    solver1.solve_mixed()
-    plt.plot(solver1.X_vec, solver1.sol_vec_mixed, color='blue')
-    plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)), 'r*')
-    plt.show()
-
-
-"""Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
-as .pdf files to working directory with labels, legends, etc."""
 def main():
-    plot2()
+    exercise3()
 
 if __name__ == '__main__':
     main()
