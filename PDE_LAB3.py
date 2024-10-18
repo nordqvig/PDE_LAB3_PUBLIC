@@ -46,7 +46,7 @@ class Solver:
     def sol_exact_mixed(self, x):
         c1 = 2*self.beta + 2
         c2 = self.alpha
-        return c1*np.log(1+x) - x - c2 # analytical solution from report
+        return c1*np.log(1+x) - x + c2 # analytical solution from report
 
     """Solves for u(x) in the following differential equation: 
     -(a(x)*u'(x))' = f(x) 
@@ -138,6 +138,7 @@ class Solver:
             temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed) # vector holding error at each gridpoint
             self.error_mixed = max(np.abs(temp_vec))
 
+
 def plot1():
     errors_dirichlet = [] # to hold errors from solvers
     errors_mixed = []
@@ -167,7 +168,7 @@ def plot1():
 
 
 def plot2():
-    solver1 = Solver(10, 0, 1)
+    solver1 = Solver(10, 0, 5)
     solver1.solve_mixed()
     plt.plot(solver1.X_vec, solver1.sol_vec_mixed, color='blue')
     plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)), 'r*')
