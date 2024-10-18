@@ -139,35 +139,47 @@ class Solver:
             temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed)
             self.error_mixed = max(np.abs(temp_vec))
 
-def main():
+
+
+def plot1():
     errors_dirichlet = [] # to hold errors from solvers
     errors_mixed = []
     X_axis = [] # x axis values to be plotted
+    Slope2 = [] # vector to hold reference line y = exp(2x), to give y = 2x in loglog plot
 
-    # for i in range(1, 10):
-    #     X_axis.append(1/ (2 ** i))
-    #     tempSolver = Solver(2**i,0,1)
-    #     tempSolver.solve_dirichlet()
-    #     tempSolver.solve_mixed()
-    #     tempSolver.calculate_error()
-    #     errors_dirichlet.append(tempSolver.error_dirichlet)
-    #     errors_mixed.append(tempSolver.error_mixed)
-    #
+    for i in range(1, 8):
+        X_axis.append(1/ (2 ** i))
 
-    # print(errors_mixed)
+        tempSolver = Solver(2**i,0,1)
+        tempSolver.solve_dirichlet()
+        tempSolver.solve_mixed()
+        tempSolver.calculate_error()
 
-    # fig, (ax1, ax2) = plt.subplots(1, 2)
-    # ax1.loglog(X_axis, errors_dirichlet, color = 'blue' , label='Dirichlet')
-    # ax2.loglog(X_axis, errors_mixed, color = 'red' , label='Mixed')
+        errors_dirichlet.append(tempSolver.error_dirichlet)
+        errors_mixed.append(tempSolver.error_mixed)
+        Slope2.append(np.exp(2*i))
 
-    solver1 = Solver(10,0, 1)
-    solver1.solve_mixed()
-    plt.plot(solver1.X_vec, solver1.sol_vec_mixed, color = 'blue')
-    plt.plot(solver1.X_vec, solver1.sol_exact_mixed(np.array(solver1.X_vec)), 'r*')
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.loglog(X_axis, errors_dirichlet, color = 'blue' , label='Dirichlet')
+    ax1.loglog(X_axis, np.array(X_axis)*2, color = 'orange', label='Slope = 2')
+    ax2.loglog(X_axis, errors_mixed, color = 'red' , label='Mixed')
+    ax2.loglog(X_axis, np.array(X_axis)*2, color = 'orange' , label='Slope = 2')
+    ax1.legend()
+    ax2.legend()
     plt.show()
+
+
+"""Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
+as .pdf files to working directory with labels, legends, etc."""
+def exercise3plots():
+    pass
+    #TODO
 
 def testing():
     pass
+
+def main():
+    plot1()
 
 if __name__ == '__main__':
     main()
