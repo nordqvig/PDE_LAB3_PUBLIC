@@ -6,15 +6,15 @@ import matplotlib.pyplot as plt
 using the FD scheme outlined in the report. Also contains error calculation functionality."""
 class Solver:
     """Initialization function that assigns the following attributes to the class instance:
-     self.n - the number of partitions that interval [0,1] is split into.
+     self.n - the number of partitions that the interval [0,1] is split into.
      self.h - the step size length (h) of each partition on interval [0,1].
-     self.X_vec - array containing n equidistant values on interval [0,1] with distance = self.h.
+     self.X_vec - array containing n equidistant values on interval [0,1] with length = self.h.
      self.alpha - the left boundary condition (at x=0) (dirichlet OR neumann).
      self.beta - the right boundary condition (at x=1) (dirichlet OR neumann).
-     self.sol_vec_dirichlet - Attribute to hold the numerical solution obtained with dirichlet boundary conditions
-     self.sol_vec_mixed - Attribute to hold the numerical solution obtained with mixed boundary conditions
-     self.error_dirichlet - Attribute to hold the infinity error as outlined in exercise 3 for dirichlet solution.
-     self.error_mixed - Attribute to hold the infinity error as outlined in exercise 3 for mixed solution. """
+     self.sol_vec_dirichlet - Attribute to hold the numerical solution obtained with dirichlet boundary conditions.
+     self.sol_vec_mixed - Attribute to hold the numerical solution obtained with mixed boundary conditions.
+     self.error_dirichlet - Attribute to hold the infinity error as outlined in exercise 3 for the dirichlet solution.
+     self.error_mixed - Attribute to hold the infinity error as outlined in exercise 3 for the mixed solution. """
     def __init__(self, n, alpha, beta):
         self.n = n
         self.h = 1/self.n
@@ -139,7 +139,7 @@ class Solver:
             self.error_mixed = max(np.abs(temp_vec))
 
 """Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
-as .pdf files to working directory with labels, legends, etc."""
+as .pdf files in working directory with labels, legends, etc."""
 def exercise3():
 
     # arrays to hold errors from solvers for different values of h = 1 / N
@@ -170,7 +170,7 @@ def exercise3():
     plt.loglog(X_axis, errors_dirichlet, color = 'blue', marker = '*', label = 'Error of numerical solution')
     plt.loglog(X_axis, np.array(X_axis) ** 2, color = 'orange', label = 'Theoretical 2nd order behavior')
     plt.title('Convergence rate for Dirichlet boundary conditions, loglog scale')
-    plt.xlabel('Steplength h = 1/N')
+    plt.xlabel('Step length h = 1/N')
     plt.ylabel('Error')
     plt.legend()
     plt.savefig('Exercise3a)Dirichlet.pdf', format = 'pdf')
@@ -181,7 +181,7 @@ def exercise3():
     plt.loglog(X_axis, errors_dirichlet, color = 'red', marker = '*', label = 'Error of numerical solution')
     plt.loglog(X_axis, np.array(X_axis) ** 2, color = 'orange', label = 'Theoretical 2nd order behavior')
     plt.title('Convergence rate for mixed boundary conditions, loglog scale')
-    plt.xlabel('Steplength h = 1/N')
+    plt.xlabel('Step length h = 1/N')
     plt.ylabel('Error')
     plt.legend()
     plt.savefig('Exercise3b)mixed.pdf', format = 'pdf')
