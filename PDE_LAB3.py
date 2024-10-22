@@ -138,8 +138,8 @@ class Solver:
             temp_vec = np.array(sol_vec_exact_mixed) - np.array(self.sol_vec_mixed) # vector holding error at each gridpoint
             self.error_mixed = max(np.abs(temp_vec))
 
-"""Function to be called to generate all the necessary plots for exercise 3 in the labsheet. Saves the generated figures
-as .pdf files in working directory with labels, legends, etc."""
+"""Function to be called to generate all the plots for exercise 3 in the labsheet. Saves the generated figures
+as .pdf files in working directory. """
 def exercise3():
 
     # arrays to hold errors from solvers for different values of h = 1 / N
@@ -187,7 +187,71 @@ def exercise3():
     plt.savefig('Exercise3b)mixed.pdf', format = 'pdf')
     plt.clf()
 
+"""Function to be called to generate all the plots for exercise 1 in the labsheet. Saves the generated figures 
+as .pdf files in the working directory."""
+def exercise1():
+
+    """The analytical solution to the Dirichlet problem. Take in x, alpha, and beta and return the analytical solution
+    at current point, u(x). """
+    def u_dirichlet(x, alpha, beta):
+        c2 = alpha
+        c1 = (beta - alpha + 1) / np.log(2)
+        return c1 * np.log(x + 1) - x + c2
+
+    """The analytical solution to the mixed problem. Take in x, alpha, and beta and return the analytical solution 
+        at current point, u(x). """
+    def u_mixed(x, alpha, beta): # Function definition
+        c2 = alpha
+        c1 = -2 * (beta + 1)
+        return -(c1 * np.log(x + 1)) - x + c2
+
+    # Values for alpha and beta.
+    Valpha = [1.0, 2.0, 3.0]
+    Vbeta = [0.2, 0.5, 0.8]
+
+    # Define the range for x.
+    x = np.linspace(0, 1, 400)
+
+    # Create the dirichlet plot.
+    plt.figure(figsize=(10, 6))
+
+    # Plot for each alpha and beta combination.
+    for alpha in Valpha:
+        for beta in Vbeta:
+            y = u_dirichlet(x, alpha, beta)
+            plt.plot(x, y, label = f'alpha={alpha}, beta = {beta}') # PLot for each alpha and beta combination
+
+    # Labels and legend
+    plt.xlabel('x')
+    plt.ylabel('u(x)')
+    plt.title('Plot of u(x) for various alpha and beta values with dirichlet boundary conditions')
+    plt.legend(loc="upper right")
+    plt.grid(True)
+
+    plt.savefig('Exercise1a)Dirichlet.pdf', format = 'pdf') # Save the plot to a PDF file.
+    plt.clf() # Clear figure so next figure can be created.
+
+    # Create the mixed plot.
+    plt.figure(figsize=(10, 6))
+
+    # Plot for each alpha and beta combination.
+    for alpha in Valpha:
+        for beta in Vbeta:
+            y = u_mixed(x, alpha, beta)
+            plt.plot(x, y, label=f'alpha={alpha}, beta={beta}') # Plot for each alpha and beta combination
+
+    # Labels and legend
+    plt.xlabel('x')
+    plt.ylabel('u(x)')
+    plt.title('Plot of u(x) for various alpha and beta values with mixed boundary conditions')
+    plt.legend(loc="upper left")
+    plt.grid(True)
+
+    plt.savefig('Exercise1b)mixed.pdf', format = 'pdf') # Save the plot to a PDF file.
+
+"""Call the main function to generate the plots for exercise 1 and exercise 3."""
 def main():
+    exercise1()
     exercise3()
 
 if __name__ == '__main__':
