@@ -202,8 +202,8 @@ def exercise1():
         at current point, u(x). """
     def u_mixed(x, alpha, beta): # Function definition
         c2 = alpha
-        c1 = -2 * (beta + 1)
-        return -(c1 * np.log(x + 1)) - x + c2
+        c1 = 2 * (beta + 1)
+        return (c1 * np.log(x + 1)) - x + c2
 
     # Values for alpha and beta.
     Valpha = [1.0, 2.0, 3.0]
